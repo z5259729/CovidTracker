@@ -11,21 +11,35 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.SearchView;
 
+import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 
+import java.util.AbstractList;
+import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private CountryAdapter mAdapter;
+    ImageView imageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        ImageView imageView = (ImageView) findViewById(R.id.ivFlag);
+
+        Glide.with(this).load("http://goo.gl/gEgYUd").into(imageView);
+        
         mRecyclerView = findViewById(R.id.rvList);
         mRecyclerView.setHasFixedSize(true);
         CountryAdapter.RecyclerViewClickListener listener = new CountryAdapter.RecyclerViewClickListener() {
@@ -35,12 +49,34 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-        Gson gson = new Gson();
-        Response response = gson.fromJson(Response.json, Response.class);
-        mAdapter = new CountryAdapter(response.getCountries(), listener);
-        mAdapter.sort(CountryAdapter.SORT_METHOD_TOTAL);
+        mAdapter = new CountryAdapter(new ArrayList<Country>(), listener);
         mRecyclerView.setAdapter(mAdapter);
+
+            Retrofit retrofit = new Retrofit.Builder().baseUrl("https://api.covid19api.com/").
+                    addConverterFactory(GsonConverterFactory.create()).build();
+
+            CovidService service = retrofit.create(CovidService.class);
+            Call<Response> responseCall = service.getResponse();
+        responseCall.enqueue(new Callback<Response>()
+
+            {
+                @Override
+                public void onResponse
+                (Call < Response > call, retrofit2.Response < Response > response){
+                List<Country> countries = response.body().getCountries();
+                mAdapter.setCountries(countries);
+                mAdapter.sort(CountryAdapter.SORT_METHOD_TOTAL);
+
+            }
+
+                @Override
+                public void onFailure (Call < Response > call, Throwable t){
+
+            }
+            });
+
     }
+
 
     private void launchDetailActivity(String message) {
         Intent intent = new Intent(this, DetailActivity.class);
@@ -68,7 +104,6 @@ public class MainActivity extends AppCompatActivity {
         });
         return true;
     }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {

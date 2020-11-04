@@ -120,4 +120,9 @@ public class CountryAdapter extends RecyclerView.Adapter<CountryAdapter.CountryV
         }
         notifyDataSetChanged();
     }
+    public void setCountries(List<Country> countries){
+        mCountriesFiltered.clear();
+        mCountriesFiltered.addAll(countries);
+        notifyDataSetChanged();
+    }
 }
