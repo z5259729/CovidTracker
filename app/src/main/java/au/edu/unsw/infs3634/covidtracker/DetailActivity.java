@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 
 import java.text.DecimalFormat;
@@ -31,6 +32,7 @@ public class DetailActivity extends AppCompatActivity {
     private TextView mNewRecovered;
     private TextView mTotalRecovered;
     private ImageView mSearch;
+    private ImageView mFlag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +47,7 @@ public class DetailActivity extends AppCompatActivity {
         mNewRecovered = findViewById(R.id.tvNewRecovered);
         mTotalRecovered = findViewById(R.id.tvTotalRecovered);
         mSearch = findViewById(R.id.ivSearch);
+        mFlag = findViewById(R.id.ivFlag);
 
         Intent intent = getIntent();
         String countryCode = intent.getStringExtra(INTENT_MESSAGE);
@@ -62,6 +65,7 @@ public class DetailActivity extends AppCompatActivity {
                 for(final Country country : countries) {
                     if(country.getCountryCode().equals(countryCode)) {
                         DecimalFormat df = new DecimalFormat( "#,###,###,###" );
+                        Glide.with(mFlag).load("https://www.countryflags.io/be/flat/64.png").into(mFlag);
                         setTitle(country.getCountryCode());
                         mCountry.setText(country.getCountry());
                         mNewCases.setText(df.format(country.getNewConfirmed()));

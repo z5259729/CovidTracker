@@ -29,16 +29,16 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class MainActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private CountryAdapter mAdapter;
-    ImageView imageView;
+   // ImageView imageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ImageView imageView = (ImageView) findViewById(R.id.ivFlag);
+      //  ImageView imageView = (ImageView) findViewById(R.id.ivFlag);
 
-        Glide.with(this).load("http://goo.gl/gEgYUd").into(imageView);
+
         
         mRecyclerView = findViewById(R.id.rvList);
         mRecyclerView.setHasFixedSize(true);
