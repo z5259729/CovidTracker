@@ -65,7 +65,7 @@ public class DetailActivity extends AppCompatActivity {
                 for(final Country country : countries) {
                     if(country.getCountryCode().equals(countryCode)) {
                         DecimalFormat df = new DecimalFormat( "#,###,###,###" );
-                        Glide.with(mFlag).load("https://www.countryflags.io/be/flat/64.png").into(mFlag);
+                        Glide.with(mFlag).load("https://www.countryflags.io/" + country.getCountryCode() + "/flat/64.png").into(mFlag);
                         setTitle(country.getCountryCode());
                         mCountry.setText(country.getCountry());
                         mNewCases.setText(df.format(country.getNewConfirmed()));

@@ -5,10 +5,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -78,6 +81,7 @@ public class CountryAdapter extends RecyclerView.Adapter<CountryAdapter.CountryV
         holder.totalCases.setText(df.format(country.getTotalConfirmed()));
         holder.newCases.setText("+" + df.format(country.getNewConfirmed()));
         holder.itemView.setTag(country.getCountryCode());
+        Glide.with(holder.flag).load("https://www.countryflags.io/" + country.getCountryCode() + "/flat/64.png").into(holder.flag);
     }
 
     @Override
@@ -87,6 +91,7 @@ public class CountryAdapter extends RecyclerView.Adapter<CountryAdapter.CountryV
 
     public static class CountryViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public TextView country, totalCases, newCases;
+        public ImageView flag;
         private RecyclerViewClickListener listener;
 
         public CountryViewHolder(@NonNull View itemView, RecyclerViewClickListener listener) {
@@ -96,6 +101,7 @@ public class CountryAdapter extends RecyclerView.Adapter<CountryAdapter.CountryV
             country = itemView.findViewById(R.id.tvCountry);
             totalCases = itemView.findViewById(R.id.tvTotalCases);
             newCases = itemView.findViewById(R.id.tvNewCases);
+            flag = itemView.findViewById(R.id.ivFlag);
         }
 
         @Override
