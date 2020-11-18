@@ -75,17 +75,7 @@ public class DetailActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Retrofit retrofit = new Retrofit.Builder().baseUrl("https://api.covid19api.com/").
-                                addConverterFactory(GsonConverterFactory.create()).build();
 
-                        CovidService service = retrofit.create(CovidService.class);
-                        Call<Response> responseCall = service.getResponse();
-                        responseCall.enqueue(new Callback<Response>() {
-                            @Override
-                            public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
-                                List<Country> countries = response.body().getCountries();
-                                for (final Country country : countries) {
-                                    if (country.getCountryCode().equals(country.getCountryCode())) {
                                         DecimalFormat df = new DecimalFormat("#,###,###,###");
                                         //Glide.with(mFlag).load("https://www.countryflags.io/" + country.getCountryCode() + "/flat/64.png").into(mFlag);
                                         setTitle(country.getCountryCode());
@@ -102,13 +92,6 @@ public class DetailActivity extends AppCompatActivity {
                                                 searchCountry(country.getCountry());
                                             }
                                         });
-                                    }
-                                }
-                            }
-
-                            @Override
-                            public void onFailure(Call<Response> call, Throwable t) {
-
                             }
                         });
 
@@ -149,8 +132,7 @@ public class DetailActivity extends AppCompatActivity {
 
 
             }
-        });
-    }
+    
 
     private void searchCountry(String country) {
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.google.com/search?q=covid " + country));
