@@ -11,9 +11,16 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+<<<<<<< HEAD
+=======
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+>>>>>>> 675854e45c9db90fbf1b7e7598484d55366ef67a
 import android.widget.SearchView;
 import android.widget.Toast;
 
+<<<<<<< HEAD
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -21,6 +28,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+=======
+import com.bumptech.glide.Glide;
+import com.google.gson.Gson;
+
+import java.util.AbstractList;
+>>>>>>> 675854e45c9db90fbf1b7e7598484d55366ef67a
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executors;
@@ -30,16 +43,29 @@ import retrofit2.Callback;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 public class MainActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private CountryAdapter mAdapter;
+<<<<<<< HEAD
     private CountryDatabase mDb;
+=======
+   // ImageView imageView;
+>>>>>>> 675854e45c9db90fbf1b7e7598484d55366ef67a
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+      //  ImageView imageView = (ImageView) findViewById(R.id.ivFlag);
+
+
+        
         mRecyclerView = findViewById(R.id.rvList);
         mRecyclerView.setHasFixedSize(true);
         CountryAdapter.RecyclerViewClickListener listener = new CountryAdapter.RecyclerViewClickListener() {
@@ -51,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
 
         mAdapter = new CountryAdapter(new ArrayList<Country>(), listener);
         mRecyclerView.setAdapter(mAdapter);
+<<<<<<< HEAD
         mDb = Room.databaseBuilder(getApplicationContext(), CountryDatabase.class, "country-database").build();
 
         Executors.newSingleThreadExecutor().execute(new Runnable() {
@@ -112,7 +139,34 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+=======
+
+            Retrofit retrofit = new Retrofit.Builder().baseUrl("https://api.covid19api.com/").
+                    addConverterFactory(GsonConverterFactory.create()).build();
+
+            CovidService service = retrofit.create(CovidService.class);
+            Call<Response> responseCall = service.getResponse();
+        responseCall.enqueue(new Callback<Response>()
+
+            {
+                @Override
+                public void onResponse
+                (Call < Response > call, retrofit2.Response < Response > response){
+                List<Country> countries = response.body().getCountries();
+                mAdapter.setCountries(countries);
+                mAdapter.sort(CountryAdapter.SORT_METHOD_TOTAL);
+
+            }
+
+                @Override
+                public void onFailure (Call < Response > call, Throwable t){
+
+            }
+            });
+
+>>>>>>> 675854e45c9db90fbf1b7e7598484d55366ef67a
     }
+
 
     private void launchDetailActivity(String message) {
         Intent intent = new Intent(this, DetailActivity.class);
@@ -140,7 +194,6 @@ public class MainActivity extends AppCompatActivity {
         });
         return true;
     }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {

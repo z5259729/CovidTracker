@@ -13,15 +13,25 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+<<<<<<< HEAD
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+=======
+import com.bumptech.glide.Glide;
+import com.google.gson.Gson;
+>>>>>>> 675854e45c9db90fbf1b7e7598484d55366ef67a
 
 import java.text.DecimalFormat;
 import java.util.concurrent.Executors;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class DetailActivity extends AppCompatActivity {
     public static final String INTENT_MESSAGE = "au.edu.unsw.infs3634.covidtracker.intent_message";
@@ -36,7 +46,11 @@ public class DetailActivity extends AppCompatActivity {
     private TextView mNewRecovered;
     private TextView mTotalRecovered;
     private ImageView mSearch;
+<<<<<<< HEAD
     private CheckBox mHome;
+=======
+    private ImageView mFlag;
+>>>>>>> 675854e45c9db90fbf1b7e7598484d55366ef67a
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,11 +65,16 @@ public class DetailActivity extends AppCompatActivity {
         mNewRecovered = findViewById(R.id.tvNewRecovered);
         mTotalRecovered = findViewById(R.id.tvTotalRecovered);
         mSearch = findViewById(R.id.ivSearch);
+<<<<<<< HEAD
         mHome = findViewById(R.id.cbHome);
+=======
+        mFlag = findViewById(R.id.ivFlag);
+>>>>>>> 675854e45c9db90fbf1b7e7598484d55366ef67a
 
         Intent intent = getIntent();
         mCountryCode = intent.getStringExtra(INTENT_MESSAGE);
 
+<<<<<<< HEAD
         mDb = Room.databaseBuilder(getApplicationContext(), CountryDatabase.class, "country-database").build();
         Executors.newSingleThreadExecutor().execute(new Runnable() {
             @Override
@@ -65,6 +84,22 @@ public class DetailActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+=======
+
+        Retrofit retrofit = new Retrofit.Builder().baseUrl("https://api.covid19api.com/").
+                addConverterFactory(GsonConverterFactory.create()).build();
+
+        CovidService service = retrofit.create(CovidService.class);
+        Call<Response> responseCall = service.getResponse();
+        responseCall.enqueue(new Callback<Response>() {
+            @Override
+            public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
+                List<Country> countries = response.body().getCountries();
+                for(final Country country : countries) {
+                    if(country.getCountryCode().equals(countryCode)) {
+                        DecimalFormat df = new DecimalFormat( "#,###,###,###" );
+                        Glide.with(mFlag).load("https://www.countryflags.io/" + country.getCountryCode() + "/flat/64.png").into(mFlag);
+>>>>>>> 675854e45c9db90fbf1b7e7598484d55366ef67a
                         setTitle(country.getCountryCode());
                         mCountry.setText(country.getCountry());
                         mNewCases.setText(df.format(country.getNewConfirmed()));
@@ -79,6 +114,7 @@ public class DetailActivity extends AppCompatActivity {
                                 searchCountry(country.getCountry());
                             }
                         });
+<<<<<<< HEAD
                     }
                 });
 
@@ -110,13 +146,24 @@ public class DetailActivity extends AppCompatActivity {
                         }else{
                             messageRef.setValue("");
                         }
+=======
+>>>>>>> 675854e45c9db90fbf1b7e7598484d55366ef67a
                     }
-                });
+                }
             }
+
+            @Override
+            public void onFailure(Call<Response> call, Throwable t) {
+
+            }
+<<<<<<< HEAD
 
         });
 
 
+=======
+        });
+>>>>>>> 675854e45c9db90fbf1b7e7598484d55366ef67a
     }
 
     private void searchCountry(String country) {
