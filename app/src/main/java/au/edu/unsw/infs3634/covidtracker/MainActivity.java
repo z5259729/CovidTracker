@@ -24,7 +24,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import com.bumptech.glide.Glide;
+
 import com.google.gson.Gson;
 
 import java.util.AbstractList;
@@ -125,30 +125,6 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-=======
-
-            Retrofit retrofit = new Retrofit.Builder().baseUrl("https://api.covid19api.com/").
-                    addConverterFactory(GsonConverterFactory.create()).build();
-
-            CovidService service = retrofit.create(CovidService.class);
-            Call<Response> responseCall = service.getResponse();
-        responseCall.enqueue(new Callback<Response>()
-
-            {
-                @Override
-                public void onResponse
-                (Call < Response > call, retrofit2.Response < Response > response){
-                List<Country> countries = response.body().getCountries();
-                mAdapter.setCountries(countries);
-                mAdapter.sort(CountryAdapter.SORT_METHOD_TOTAL);
-
-            }
-
-                @Override
-                public void onFailure (Call < Response > call, Throwable t){
-
-            }
-            });
 
     }
 

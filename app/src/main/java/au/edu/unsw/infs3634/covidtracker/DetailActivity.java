@@ -13,19 +13,17 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-<<<<<<< HEAD
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-=======
-import com.bumptech.glide.Glide;
+
 import com.google.gson.Gson;
->>>>>>> 675854e45c9db90fbf1b7e7598484d55366ef67a
 
 import java.text.DecimalFormat;
+import java.util.List;
 import java.util.concurrent.Executors;
 
 import retrofit2.Call;
@@ -73,81 +71,85 @@ public class DetailActivity extends AppCompatActivity {
             @Override
             public void run() {
                 Country country = mDb.countryDao().getCountry(mCountryCode);
-                DecimalFormat df = new DecimalFormat( "#,###,###,###" );
+                DecimalFormat df = new DecimalFormat("#,###,###,###");
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-        Retrofit retrofit = new Retrofit.Builder().baseUrl("https://api.covid19api.com/").
-                addConverterFactory(GsonConverterFactory.create()).build();
+                        Retrofit retrofit = new Retrofit.Builder().baseUrl("https://api.covid19api.com/").
+                                addConverterFactory(GsonConverterFactory.create()).build();
 
-        CovidService service = retrofit.create(CovidService.class);
-        Call<Response> responseCall = service.getResponse();
-        responseCall.enqueue(new Callback<Response>() {
-            @Override
-            public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
-                List<Country> countries = response.body().getCountries();
-                for(final Country country : countries) {
-                    if(country.getCountryCode().equals(countryCode)) {
-                        DecimalFormat df = new DecimalFormat( "#,###,###,###" );
-                        Glide.with(mFlag).load("https://www.countryflags.io/" + country.getCountryCode() + "/flat/64.png").into(mFlag);
-                        setTitle(country.getCountryCode());
-                        mCountry.setText(country.getCountry());
-                        mNewCases.setText(df.format(country.getNewConfirmed()));
-                        mTotalCases.setText(df.format(country.getTotalConfirmed()));
-                        mNewDeaths.setText(df.format(country.getNewDeaths()));
-                        mTotalDeaths.setText(df.format(country.getTotalDeaths()));
-                        mNewRecovered.setText(df.format(country.getNewRecovered()));
-                        mTotalRecovered.setText(df.format(country.getTotalRecovered()));
-                        mSearch.setOnClickListener(new View.OnClickListener() {
+                        CovidService service = retrofit.create(CovidService.class);
+                        Call<Response> responseCall = service.getResponse();
+                        responseCall.enqueue(new Callback<Response>() {
                             @Override
-                            public void onClick(View v) {
-                                searchCountry(country.getCountry());
+                            public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
+                                List<Country> countries = response.body().getCountries();
+                                for (final Country country : countries) {
+                                    if (country.getCountryCode().equals(country.getCountryCode())) {
+                                        DecimalFormat df = new DecimalFormat("#,###,###,###");
+                                        //Glide.with(mFlag).load("https://www.countryflags.io/" + country.getCountryCode() + "/flat/64.png").into(mFlag);
+                                        setTitle(country.getCountryCode());
+                                        mCountry.setText(country.getCountry());
+                                        mNewCases.setText(df.format(country.getNewConfirmed()));
+                                        mTotalCases.setText(df.format(country.getTotalConfirmed()));
+                                        mNewDeaths.setText(df.format(country.getNewDeaths()));
+                                        mTotalDeaths.setText(df.format(country.getTotalDeaths()));
+                                        mNewRecovered.setText(df.format(country.getNewRecovered()));
+                                        mTotalRecovered.setText(df.format(country.getTotalRecovered()));
+                                        mSearch.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                searchCountry(country.getCountry());
+                                            }
+                                        });
+                                    }
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<Response> call, Throwable t) {
+
+                            }
+                        });
+
+                        FirebaseDatabase database = FirebaseDatabase.getInstance();
+                        DatabaseReference messageRef = database.getReference(FirebaseAuth.getInstance().getUid());
+                        messageRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                String result = (String) snapshot.getValue();
+                                if (result != null && result.equals(country.getCountryCode())) {
+                                    mHome.setChecked(true);
+                                } else {
+                                    mHome.setChecked(false);
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
+
+                        mHome.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                            @Override
+                            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                                DatabaseReference messageRef = database.getReference(FirebaseAuth.getInstance().getUid());
+                                if (isChecked) {
+                                    messageRef.setValue(country.getCountryCode());
+                                } else {
+                                    messageRef.setValue("");
+                                }
+
                             }
                         });
                     }
+
                 });
 
-                FirebaseDatabase database = FirebaseDatabase.getInstance();
-                DatabaseReference messageRef = database.getReference(FirebaseAuth.getInstance().getUid());
-                messageRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        String result = (String) snapshot.getValue();
-                        if(result!=null && result.equals(country.getCountryCode())){
-                            mHome.setChecked(true);
-                        }else{
-                            mHome.setChecked(false);
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
-
-                mHome.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                    @Override
-                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                        DatabaseReference messageRef = database.getReference(FirebaseAuth.getInstance().getUid());
-                        if(isChecked) {
-                            messageRef.setValue(country.getCountryCode());
-                        }else{
-                            messageRef.setValue("");
-                        }
-
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Response> call, Throwable t) {
 
             }
-
         });
-
-
     }
 
     private void searchCountry(String country) {
