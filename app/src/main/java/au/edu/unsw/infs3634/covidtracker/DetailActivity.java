@@ -46,11 +46,8 @@ public class DetailActivity extends AppCompatActivity {
     private TextView mNewRecovered;
     private TextView mTotalRecovered;
     private ImageView mSearch;
-<<<<<<< HEAD
     private CheckBox mHome;
-=======
     private ImageView mFlag;
->>>>>>> 675854e45c9db90fbf1b7e7598484d55366ef67a
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,16 +62,12 @@ public class DetailActivity extends AppCompatActivity {
         mNewRecovered = findViewById(R.id.tvNewRecovered);
         mTotalRecovered = findViewById(R.id.tvTotalRecovered);
         mSearch = findViewById(R.id.ivSearch);
-<<<<<<< HEAD
         mHome = findViewById(R.id.cbHome);
-=======
         mFlag = findViewById(R.id.ivFlag);
->>>>>>> 675854e45c9db90fbf1b7e7598484d55366ef67a
 
         Intent intent = getIntent();
         mCountryCode = intent.getStringExtra(INTENT_MESSAGE);
 
-<<<<<<< HEAD
         mDb = Room.databaseBuilder(getApplicationContext(), CountryDatabase.class, "country-database").build();
         Executors.newSingleThreadExecutor().execute(new Runnable() {
             @Override
@@ -84,8 +77,6 @@ public class DetailActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-=======
-
         Retrofit retrofit = new Retrofit.Builder().baseUrl("https://api.covid19api.com/").
                 addConverterFactory(GsonConverterFactory.create()).build();
 
@@ -99,7 +90,6 @@ public class DetailActivity extends AppCompatActivity {
                     if(country.getCountryCode().equals(countryCode)) {
                         DecimalFormat df = new DecimalFormat( "#,###,###,###" );
                         Glide.with(mFlag).load("https://www.countryflags.io/" + country.getCountryCode() + "/flat/64.png").into(mFlag);
->>>>>>> 675854e45c9db90fbf1b7e7598484d55366ef67a
                         setTitle(country.getCountryCode());
                         mCountry.setText(country.getCountry());
                         mNewCases.setText(df.format(country.getNewConfirmed()));
@@ -114,7 +104,6 @@ public class DetailActivity extends AppCompatActivity {
                                 searchCountry(country.getCountry());
                             }
                         });
-<<<<<<< HEAD
                     }
                 });
 
@@ -146,8 +135,7 @@ public class DetailActivity extends AppCompatActivity {
                         }else{
                             messageRef.setValue("");
                         }
-=======
->>>>>>> 675854e45c9db90fbf1b7e7598484d55366ef67a
+
                     }
                 }
             }
@@ -156,14 +144,10 @@ public class DetailActivity extends AppCompatActivity {
             public void onFailure(Call<Response> call, Throwable t) {
 
             }
-<<<<<<< HEAD
 
         });
 
 
-=======
-        });
->>>>>>> 675854e45c9db90fbf1b7e7598484d55366ef67a
     }
 
     private void searchCountry(String country) {

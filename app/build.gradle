@@ -40,13 +40,10 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.6'
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
-<<<<<<< HEAD
     implementation 'androidx.room:room-runtime:2.2.5'
     implementation 'com.google.firebase:firebase-auth:20.0.1'
     annotationProcessor 'androidx.room:room-compiler:2.2.5'
-=======
     implementation 'com.github.bumptech.glide:glide:4.9.0'
->>>>>>> 675854e45c9db90fbf1b7e7598484d55366ef67a
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'

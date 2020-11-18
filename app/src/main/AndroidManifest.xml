@@ -3,10 +3,7 @@
     package="au.edu.unsw.infs3634.covidtracker">
 
     <uses-permission android:name="android.permission.INTERNET" />
-<<<<<<< HEAD
-=======
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
->>>>>>> 675854e45c9db90fbf1b7e7598484d55366ef67a
 
     <application
         android:allowBackup="true"

@@ -11,16 +11,12 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-<<<<<<< HEAD
-=======
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
->>>>>>> 675854e45c9db90fbf1b7e7598484d55366ef67a
 import android.widget.SearchView;
 import android.widget.Toast;
 
-<<<<<<< HEAD
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -28,12 +24,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-=======
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 
 import java.util.AbstractList;
->>>>>>> 675854e45c9db90fbf1b7e7598484d55366ef67a
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executors;
@@ -43,26 +37,19 @@ import retrofit2.Callback;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private CountryAdapter mAdapter;
-<<<<<<< HEAD
     private CountryDatabase mDb;
-=======
-   // ImageView imageView;
->>>>>>> 675854e45c9db90fbf1b7e7598484d55366ef67a
+    ImageView imageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-      //  ImageView imageView = (ImageView) findViewById(R.id.ivFlag);
+        ImageView imageView = (ImageView) findViewById(R.id.ivFlag);
 
 
         
@@ -77,7 +64,6 @@ public class MainActivity extends AppCompatActivity {
 
         mAdapter = new CountryAdapter(new ArrayList<Country>(), listener);
         mRecyclerView.setAdapter(mAdapter);
-<<<<<<< HEAD
         mDb = Room.databaseBuilder(getApplicationContext(), CountryDatabase.class, "country-database").build();
 
         Executors.newSingleThreadExecutor().execute(new Runnable() {
@@ -164,7 +150,6 @@ public class MainActivity extends AppCompatActivity {
             }
             });
 
->>>>>>> 675854e45c9db90fbf1b7e7598484d55366ef67a
     }
 
 
